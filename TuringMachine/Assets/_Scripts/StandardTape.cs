@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Assets._Scripts
 {
-    public class Tape
+    public class StandardTape
     {
         #region Internal Fields
         private readonly List<string> _tape;
@@ -15,7 +15,7 @@ namespace Assets._Scripts
         #endregion
 
         #region Ctor
-        public Tape(string tapeInput, HashSet<string> inputAlphabet)
+        public StandardTape(string tapeInput, HashSet<string> inputAlphabet)
         {
             _tape = new List<string>();
             _head = 0;
@@ -38,7 +38,7 @@ namespace Assets._Scripts
         public string Read()
         {
             if (_head >= _tape.Count)
-                return "_"; // Return the blank symbol when reading out of bounds.
+                return "_";
             return _tape[_head];
         }
 
@@ -84,7 +84,7 @@ namespace Assets._Scripts
             foreach (var character in tapeInput)
             {
                 var ch = character.ToString();
-                if (!inputAlphabet.Contains(ch)) continue;
+                if (!inputAlphabet.Contains(ch)) throw new ArgumentException($"The symbol '{ch}' is not in the tape alphabet.");
                 _tape.Add(ch);
                 _size++;
             }

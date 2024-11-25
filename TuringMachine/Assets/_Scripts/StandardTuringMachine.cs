@@ -16,7 +16,7 @@ namespace Assets._Scripts
         private string _acceptState;
 
         private string _currentState;
-        public Tape tape;
+        public StandardTape tape;
         #endregion
 
         #region Ctor
@@ -28,6 +28,7 @@ namespace Assets._Scripts
             Dictionary<(string state, string symbol), (string nextState, string nextSymbol, Motion motion)> transitionFunction,
             string initialState,
             string acceptState)
+
         {
             _inputAlphabet = inputAlphabet;
             _tapeAlphabet = tapeAlphabet;
@@ -42,7 +43,7 @@ namespace Assets._Scripts
         private void InitializeMachine(string initialState, string tapeInput, HashSet<string> inputAlphabet)
         {
             _currentState = initialState;
-            tape = new Tape(tapeInput, inputAlphabet);
+            tape = new StandardTape(tapeInput, inputAlphabet);
         }
 
         private void ApplyTransition((string nextState, string writeSymbol, Motion motion) transitionValue, HashSet<string> tapeAlphabet)
@@ -66,7 +67,8 @@ namespace Assets._Scripts
 
                 if (_transitionFunction.TryGetValue(transitionKey, out var transitionValue))
                 {
-                    ApplyTransition(transitionValue, _tapeAlphabet); 
+                    ApplyTransition(transitionValue, _tapeAlphabet);
+                    tape.ShowTape();
                 }
                 else
                 {

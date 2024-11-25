@@ -1,15 +1,34 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Diagnostics;
+using System.Linq;
+using Debug = UnityEngine.Debug;
+using UnityEngine.EventSystems;
+
 namespace Assets._Scripts
 {
     public class Test : MonoBehaviour
     {
         void Start()
         {
-            WreverseTuringMachine();
+            //CompareAnBn(10000);
+
+            //CompareWReverse(RandomCharacter(1000, new List<string> {"a", "b", "c"}));
+            //for (int i = 0; i < 20; i++)
+            //{
+            //    MultiHeadWreverseTuringMachine(RandomCharacter(3, new List<string> { "a", "b", "c" }));
+            //}
+            var sw = new Stopwatch();
+            sw.Start();
+            StandardWreverseTuringMachine(RandomCharacter(300, new List<string> { "a", "b", "c" }));
+
+            sw.Stop();
+            print(sw.ElapsedMilliseconds);
+
         }
 
-        private void AnBnTuringMachine()
+        #region Standard
+        private void StandardAnBnTuringMachine(int n)
         {
             var transitionFunction = new Dictionary<(string state, string symbol), (string nextState, string writeSymbol, Motion motion)>
             {
@@ -28,8 +47,8 @@ namespace Assets._Scripts
             var inputAlphabet = new HashSet<string> { "a", "b" };
             var tapeAlphabet = new HashSet<string> { "a", "b", "x", "y", "_" };
 
-            var aPart = new string('a', 10000);
-            var bPart = new string('b', 9999);
+            var aPart = new string('a', n);
+            var bPart = new string('b', n);
 
             var tapeInp = aPart + bPart;
 
@@ -47,8 +66,7 @@ namespace Assets._Scripts
             Debug.Log($"Machine result: {(result ? $"Accepted" : "Rejected")}");
         }
 
-
-        private void WreverseTuringMachine()
+        private void StandardWreverseTuringMachine(string w)
         {
             var transitionFunction = new Dictionary<(string state, string symbol), (string nextState, string writeSymbol, Motion motion)>
             {
@@ -119,16 +137,7 @@ namespace Assets._Scripts
             var inputAlphabet = new HashSet<string> { "a", "b", "c" };
             var tapeAlphabet = new HashSet<string> { "a", "b", "c", "x", "_" };
 
-            var chars = new List<string> {"a", "b", "c"};
-
-            var tapeInput = "";
-            for (var i = 0; i < 10; i++)
-            {
-                var randomIndex = Random.Range(0, chars.Count);
-                var l = chars[randomIndex];
-                tapeInput+= l;
-            }
-            Debug.Log($"tape input is {tapeInput}");
+            var tapeInput = w;
 
             var turingMachine = new StandardTuringMachine(
                 tapeInput,
@@ -141,8 +150,187 @@ namespace Assets._Scripts
 
             // Run the machine
             var result = turingMachine.StartMachine();
-            Debug.Log($"Machine result: {(result ? $"Accepted: {turingMachine.tape.ShowTape()}" : "Rejected")}");
+            Debug.Log($"Machine result: {(result ? $"Accepted" : "Rejected")}");
         }
+        #endregion
+
+        #region Multi-Head
+        private void MultiHeadAnBnTuringMachine(int n)
+        {
+            var transitionFunction = new Dictionary<(string currentState, List<string> readSymbols), (string nextState, List<string> writeSymbols, List<Motion> motions)>
+            {
+                {
+                    ("q0", new List<string> { "a", "a" }),
+                    ("q0", new List<string> { "a", "a" }, new List<Motion> { Motion.S, Motion.R })
+                },
+
+                {
+                    ("q0", new List<string> { "a", "b" }),
+                    ("q1", new List<string> { "a", "b" }, new List<Motion> { Motion.S, Motion.S })
+                },
+                //q1
+                {
+                    ("q1", new List<string> { "a", "b" }),
+                    ("q1", new List<string> { "_", "_" }, new List<Motion> { Motion.R, Motion.R })
+                },
+
+                {
+                    ("q1", new List<string> { "_", "_" }),
+                    ("qf", new List<string> { "_", "_" }, new List<Motion> { Motion.S, Motion.S })
+                },
+            };
+
+            var inputAlphabet = new HashSet<string> { "a", "b" };
+            var tapeAlphabet = new HashSet<string> { "a", "b", "_" };
+
+            var aPart = new string('a', n);
+            var bPart = new string('b', n);
+
+            var tapeInp = aPart + bPart;
+
+            var turingMachine = new MultiHeadTuringMachine(
+                tapeInp,
+                inputAlphabet,
+                tapeAlphabet,
+                transitionFunction,
+                "q0",
+                "qf",
+                2
+            );
+
+            // Run the machine
+            var result = turingMachine.StartMachine();
+            Debug.Log($"Machine result: {(result ? $"Accepted" : "Rejected")}");
+        }
+        private void MultiHeadWreverseTuringMachine(string w)
+        {
+            var transitionFunction = new Dictionary<(string currentState, List<string> readSymbols), (string nextState, List<string> writeSymbols, List<Motion> motions)>
+            {
+                //q0
+                {
+                    ("q0", new List<string> { "a", "a" }),
+                    ("q0", new List<string> { "a", "a" }, new List<Motion> { Motion.R, Motion.R })
+                },
+
+                {
+                    ("q0", new List<string> { "b", "b" }),
+                    ("q0", new List<string> { "b", "b" }, new List<Motion> { Motion.R, Motion.R })
+                },
+
+                {
+                    ("q0", new List<string> { "c", "c" }),
+                    ("q0", new List<string> { "c", "c" }, new List<Motion> { Motion.R, Motion.R })
+                },
+
+                {
+                    ("q0", new List<string> { "_", "_" }),
+                    ("q1", new List<string> { "_", "_" }, new List<Motion> { Motion.L, Motion.L })
+                },
+                //q1
+                {
+                    ("q1", new List<string> { "a", "a" }),
+                    ("q2", new List<string> { "a", "a" }, new List<Motion> { Motion.L, Motion.R })
+                },
+
+                {
+                    ("q1", new List<string> { "b", "b" }),
+                    ("q2", new List<string> { "b", "b" }, new List<Motion> { Motion.L, Motion.R })
+                },
+
+                {
+                    ("q1", new List<string> { "c", "c" }),
+                    ("q2", new List<string> { "c", "c" }, new List<Motion> { Motion.L, Motion.R })
+                },
+
+                //q2
+                {
+                    ("q2", new List<string> { "a", "_" }),
+                    ("q2", new List<string> { "_", "a" }, new List<Motion> { Motion.L, Motion.R })
+                },
+
+                {
+                    ("q2", new List<string> { "b", "_" }),
+                    ("q2", new List<string> { "_", "b" }, new List<Motion> { Motion.L, Motion.R })
+                },
+
+                {
+                    ("q2", new List<string> { "c", "_" }),
+                    ("q2", new List<string> { "_", "c" }, new List<Motion> { Motion.L, Motion.R })
+                },
+
+                {
+                    ("q2", new List<string> { "_", "_" }),
+                    ("qf", new List<string> { "_", "_" }, new List<Motion> { Motion.S, Motion.S })
+                },
+            };
+
+            var inputAlphabet = new HashSet<string> { "a", "b", "c" };
+            var tapeAlphabet = new HashSet<string> { "a", "b", "c", "_" };
+
+            //var chars = inputAlphabet.ToList();
+
+            var tapeInput = w;
+
+            var turingMachine = new MultiHeadTuringMachine(
+                tapeInput,
+                inputAlphabet,
+                tapeAlphabet,
+                transitionFunction,
+                "q0",
+                "qf",
+                2
+            );
+
+            var result = turingMachine.StartMachine();
+            
+            Debug.Log($"Machine result: {(result ? $"Accepted" : "Rejected")}");
+            //Debug.Log($"Machine result: {(result ? $"Accepted" : "Rejected")} and The reverse of {w} is {turingMachine.tape.ShowTape()}");
+        }
+        #endregion
+
+        #region Processor
+        private void CompareAnBn(int n)
+        {
+            Debug.Log($"Comparing a^n b^n for n={n}:");
+
+            var standardTime = MeasureExecutionTime(() => StandardAnBnTuringMachine(n));
+            var multiHeadTime = MeasureExecutionTime(() => MultiHeadAnBnTuringMachine(n));
+
+            Debug.Log($"Standard Turing Machine: {standardTime} ms");
+            Debug.Log($"Multi-Head Turing Machine: {multiHeadTime} ms");
+        }
+
+        private void CompareWReverse(string w)
+        {
+            //Debug.Log($"Comparing w^R for w=\"{w}\":");
+
+            var standardTime = MeasureExecutionTime(() => StandardWreverseTuringMachine(w));
+            var multiHeadTime = MeasureExecutionTime(() => MultiHeadWreverseTuringMachine(w));
+
+            Debug.Log($"Standard Turing Machine: {standardTime} ms");
+            Debug.Log($"Multi-Head Turing Machine: {multiHeadTime} ms");
+        }
+        private double MeasureExecutionTime(System.Action action)
+        {
+            var sw = new Stopwatch();
+            sw.Start();
+            action();
+            sw.Stop();
+            return sw.ElapsedMilliseconds;
+        }
+        private string RandomCharacter(int length, List<string> chars)
+        {
+            var tapeInput = "";
+            for (var i = 0; i < length; i++)
+            {
+                var randomIndex = Random.Range(0, chars.Count);
+                var l = chars[randomIndex];
+                tapeInput += l;
+            }
+            //Debug.Log(tapeInput);
+            return tapeInput;
+        }
+        #endregion
 
     }
 }
