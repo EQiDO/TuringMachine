@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets._Scripts
 {
@@ -13,7 +14,10 @@ namespace Assets._Scripts
         private int _size;
         private int _head;
         #endregion
+        #region Public Variables
+        public int HeadPosition => _head;
 
+        #endregion
         #region Ctor
         public StandardTape(string tapeInput, HashSet<string> inputAlphabet)
         {
@@ -59,6 +63,8 @@ namespace Assets._Scripts
             MoveHead(motion);
         }
 
+        public List<string> GetTapeSymbols() => _tape;
+
         #endregion
 
         #region Private Methods
@@ -70,11 +76,8 @@ namespace Assets._Scripts
             {
                 _tape.Insert(0, "_");
                 _size++;
-                newHead++;
+                newHead = 0;
             }
-
-            if (_head >= _size)
-                _tape.Add("_");
 
             _head = newHead;
         }

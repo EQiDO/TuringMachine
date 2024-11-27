@@ -13,17 +13,17 @@ namespace Assets._Scripts
         #region Private Variables
         private int _size;
         private readonly int _headCount;
-        private readonly List<int> _heads;
+        private readonly List<int> _headPositions;
         #endregion
 
         #region Ctor
         public MultiHeadTape(string tapeInput, HashSet<string> inputAlphabet, int headCount)
         {
             _tape = new List<string>();
-            _heads = new List<int>();
+            _headPositions = new List<int>();
             for (var i = 0; i < headCount; i++)
             {
-                _heads.Add(0);
+                _headPositions.Add(0);
             }
             _headCount = headCount;
             InitializeTape(tapeInput, inputAlphabet);
@@ -46,7 +46,7 @@ namespace Assets._Scripts
             var headReads = new List<string>();
             for (var i = 0; i < _headCount; i++)
             {
-                var head = _heads[i];
+                var head = _headPositions[i];
                 if (head >= _tape.Count)
                     headReads.Add("_");
                 else
@@ -57,6 +57,8 @@ namespace Assets._Scripts
 
             return headReads;
         }
+        public List<string> GetTapeSymbols() => _tape;
+        public List<int> GetHeadPositions() => _headPositions;
 
 
         public void Write(List<string> symbols, HashSet<string> tapeAlphabet, List<Motion> motions)
@@ -65,7 +67,7 @@ namespace Assets._Scripts
             {
                 var symbol = symbols[i];
                 var motion = motions[i];
-                var head = _heads[i];
+                var head = _headPositions[i];
 
                 if (!tapeAlphabet.Contains(symbol))
                     throw new ArgumentException($"The symbol '{symbol}' is not in the tape alphabet.");
@@ -79,7 +81,7 @@ namespace Assets._Scripts
                     _size++;
                 }
                 var newHead = MoveHead(head, motion);
-                _heads[i] = newHead;
+                _headPositions[i] = newHead;
             }
 
         }
@@ -101,9 +103,9 @@ namespace Assets._Scripts
                 _size++;
 
                 // Adjust all head positions to account for the shift
-                for (var i = 0; i < _heads.Count; i++)
+                for (var i = 0; i < _headPositions.Count; i++)
                 {
-                    _heads[i]++;
+                    _headPositions[i]++;
                 }
 
                 newHead = 0;
