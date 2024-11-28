@@ -21,12 +21,13 @@ namespace Assets._Scripts
         void Start()
         {
             //CompareAnBn(10000);
-
-            //CompareWReverse(RandomCharacter(1000, _inputAlphabet.ToList()));
+            //var time = MeasureExecutionTime(() => StandardWreverseTuringMachine(RandomCharacter(300, _inputAlphabet.ToList()), false));
+            //print(time);
+            //CompareWReverse(RandomCharacter(300, _inputAlphabet.ToList()));
             //StandardAnBnTuringMachine(5, true);
             //MultiHeadAnBnTuringMachine(5, true);
-            //StandardWreverseTuringMachine(RandomCharacter(5, _inputAlphabet.ToList()), true);
-            MultiHeadWreverseTuringMachine(RandomCharacter(5, _inputAlphabet.ToList()), true);
+            StandardWreverseTuringMachine(RandomCharacter(5, _inputAlphabet.ToList()), true);
+            //MultiHeadWreverseTuringMachine(RandomCharacter(5, _inputAlphabet.ToList()), true);
         }
 
         #region Standard
@@ -351,7 +352,7 @@ namespace Assets._Scripts
             sw.Start();
             action();
             sw.Stop();
-            return sw.Elapsed.TotalSeconds;
+            return sw.ElapsedMilliseconds;
         }
         private string RandomCharacter(int length, List<string> chars)
         {

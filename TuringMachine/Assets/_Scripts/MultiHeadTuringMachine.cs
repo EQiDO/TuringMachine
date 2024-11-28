@@ -53,12 +53,12 @@ namespace Assets._Scripts
                 _gridManager.AddCells(tape.GetTapeSymbols());
         }
 
-        private void ApplyTransition((string nextState, List<string> writeSymbols, List<Motion> motions) transitionValue, HashSet<string> tapeAlphabet)
+        private void ApplyTransition((string nextState, List<string> writeSymbols, List<Motion> motions) transitionValue)
         {
             var (nextState, writeSymbols, motions) = transitionValue;
 
             _currentState = nextState;
-            tape.Write(writeSymbols, tapeAlphabet, motions);
+            tape.Write(writeSymbols, _tapeAlphabet, motions);
         }
 
         private bool IsEqual((string currentState, List<string> readSymbols) current, (string transitionState, List<string> transitionSymbols) transition)
@@ -86,7 +86,7 @@ namespace Assets._Scripts
 
                 try
                 {
-                    ApplyTransition(transitionValue, _tapeAlphabet);
+                    ApplyTransition(transitionValue);
 
                 }
                 catch (Exception e)
@@ -123,7 +123,7 @@ namespace Assets._Scripts
 
                 try
                 {
-                    ApplyTransition(transitionValue, _tapeAlphabet);
+                    ApplyTransition(transitionValue);
                 }
                 catch (Exception e)
                 {

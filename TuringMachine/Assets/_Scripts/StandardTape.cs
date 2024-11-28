@@ -16,6 +16,7 @@ namespace Assets._Scripts
         #endregion
         #region Public Variables
         public int HeadPosition => _head;
+        public List<string> GetTapeSymbols() => _tape;
 
         #endregion
         #region Ctor
@@ -62,8 +63,6 @@ namespace Assets._Scripts
             }
             MoveHead(motion);
         }
-
-        public List<string> GetTapeSymbols() => _tape;
 
         #endregion
 

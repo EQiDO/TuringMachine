@@ -55,12 +55,12 @@ namespace Assets._Scripts
 
         }
 
-        private void ApplyTransition((string nextState, string writeSymbol, Motion motion) transitionValue, HashSet<string> tapeAlphabet)
+        private void ApplyTransition((string nextState, string writeSymbol, Motion motion) transitionValue)
         {
             var (nextState, writeSymbol, motion) = transitionValue;
 
             _currentState = nextState;
-            tape.Write(writeSymbol, tapeAlphabet, motion);
+            tape.Write(writeSymbol, _tapeAlphabet, motion);
         }
         #endregion
 
@@ -71,21 +71,25 @@ namespace Assets._Scripts
 
             while (true)
             {
-                var transitionKey = (_currentState, tape.Read());
-                var transitionValue = _transitionFunction.FirstOrDefault(x => x.Key == transitionKey).Value;
+
+                if (!_transitionFunction.TryGetValue((_currentState, tape.Read()), out var transitionValue))
+                {
+                    Debug.LogError("No transition available. Machine halted.");
+                    return _currentState == _acceptState;
+                }
 
                 try
                 {
-                    ApplyTransition(transitionValue, _tapeAlphabet);
+                    ApplyTransition(transitionValue);
                 }
                 catch (Exception e)
                 {
                     Debug.LogError($"Error while applying transition: {e}");
-                    return _currentState == _acceptState; ;
+                    return _currentState == _acceptState;
                 }
+
                 if (_currentState == _acceptState)
                 {
-                    //Debug.Log("Machine accepted the input.");
                     return true;
                 }
             }
@@ -99,20 +103,25 @@ namespace Assets._Scripts
         {
             while (true)
             {
-                var transitionKey = (_currentState, tape.Read());
-                var transitionValue = _transitionFunction.FirstOrDefault(x => x.Key == transitionKey).Value;
-
-                if (transitionValue.Equals(default((string nextState, string writeSymbol, Motion motion))))
+                if (!_transitionFunction.TryGetValue((_currentState, tape.Read()), out var transitionValue))
                 {
                     Debug.LogError("No transition available. Machine halted.");
                     yield break;
                 }
-                
-                ApplyTransition(transitionValue, _tapeAlphabet);
-                var headPosition = new List<int> { tape.HeadPosition };
-                _gridManager.UpdateGrid(tape.GetTapeSymbols(), headPosition);
 
                 yield return new WaitForSeconds(delay);
+
+                try
+                {
+                    ApplyTransition(transitionValue);
+                    var headPosition = new List<int> { tape.HeadPosition };
+                    _gridManager.UpdateGrid(tape.GetTapeSymbols(), headPosition);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Error while applying transition: {e}");
+                    yield break;
+                }
 
                 if (_currentState == _acceptState)
                 {

@@ -32,7 +32,6 @@ namespace Assets._Scripts
 
             while (_grid.Count < tapeLength)
             {
-                // Add new cells to the grid if it's too small
                 var newCell = Instantiate(_cellObj, new Vector3(_grid.Count * _spacing, 0, 0), Quaternion.identity);
                 newCell.transform.parent = _cellsHolder.transform;
                 _grid.Add(newCell);
@@ -40,13 +39,11 @@ namespace Assets._Scripts
 
             while (_grid.Count > tapeLength)
             {
-                // Remove extra cells if the tape is shorter
                 var extraCell = _grid[^1];
                 _grid.RemoveAt(_grid.Count - 1);
                 Destroy(extraCell);
             }
 
-            // Update materials and head position
             for (var i = 0; i < tapeLength; i++)
             { 
                 var symbol = tapeSymbols[i];
@@ -89,13 +86,11 @@ namespace Assets._Scripts
 
         public void UpdateHeadsCellsColor(List<int> headPositions)
         {
-            // Reset all cells to white
             foreach (var cell in _grid)
             {
                 cell.GetComponent<MeshRenderer>().material.color = Color.white;
             }
 
-            // Track the frequency of head positions
             var positionCounts = new Dictionary<int, int>();
             foreach (var position in headPositions)
             {
@@ -109,10 +104,8 @@ namespace Assets._Scripts
                 }
             }
 
-            // Colors for unique heads
             var headColors = new List<Color> { Color.green, Color.red, Color.blue };
 
-            // Apply colors to cells
             for (var i = 0; i < headPositions.Count; i++)
             {
                 var headIndex = headPositions[i];
@@ -121,12 +114,10 @@ namespace Assets._Scripts
 
                 if (positionCounts[headIndex] > 1)
                 {
-                    // If multiple heads are here, make it yellow
                     _grid[headIndex].GetComponent<MeshRenderer>().material.color = Color.yellow;
                 }
                 else
                 {
-                    // Otherwise, use the unique color for the head
                     _grid[headIndex].GetComponent<MeshRenderer>().material.color = headColors[i % headColors.Count];
                 }
             }
