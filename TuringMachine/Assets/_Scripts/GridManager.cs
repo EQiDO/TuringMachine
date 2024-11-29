@@ -5,16 +5,23 @@ namespace Assets._Scripts
 {
     public class GridManager : MonoBehaviour
     {
+        #region Private Variables
         private List<GameObject> _grid = new List<GameObject>();
         private readonly float _spacing = 1;
         private SymbolMaterials _symbolMaterials;
         [SerializeField] private GameObject _cellObj;
         [SerializeField] private GameObject _cellsHolder;
+        #endregion
 
+        #region Private Methods
         void Start()
         {
             _symbolMaterials = FindObjectOfType<SymbolMaterials>();
         }
+
+        #endregion
+
+        #region Public Methods
         public void AddCells(List<string> tapeSymbols)
         {
             for (var i = 0; i < tapeSymbols.Count; i++)
@@ -45,7 +52,7 @@ namespace Assets._Scripts
             }
 
             for (var i = 0; i < tapeLength; i++)
-            { 
+            {
                 var symbol = tapeSymbols[i];
 
                 UpdateCell(i, symbol);
@@ -122,7 +129,6 @@ namespace Assets._Scripts
                 }
             }
         }
-
-
+        #endregion
     }
 }

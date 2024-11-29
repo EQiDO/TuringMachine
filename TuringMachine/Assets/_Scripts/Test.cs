@@ -23,14 +23,20 @@ namespace Assets._Scripts
 
         void Start()
         {
-            //CompareAnBn(1000);
-            //var time = MeasureExecutionTime(() => StandardWreverseTuringMachine(RandomCharacter(300, _inputAlphabet.ToList()), false));
-            //print(time);
+            // Compare
+            CompareAnBn(1000);
             //CompareWReverse(RandomCharacter(300, _inputAlphabet.ToList()));
+
+            // Standard
             //StandardAnBnTuringMachine(5, true);
-            MultiHeadAnBnTuringMachine(5, true);
             //StandardWreverseTuringMachine(RandomCharacter(5, _inputAlphabet.ToList()), true);
-            //MultiHeadWreverseTuringMachine(RandomCharacter(5, _inputAlphabet.ToList()), true);
+
+            // Two-Head
+            //TwoHeadAnBnTuringMachine(5, true);
+            //TwoHeadWreverseTuringMachine(RandomCharacter(5, _inputAlphabet.ToList()), true);
+
+            //Three-Head
+            //ThreeHeadTwoPowerNTuringMachine(3, true);
         }
         #endregion
 
@@ -181,8 +187,8 @@ namespace Assets._Scripts
 
         #endregion
 
-        #region Multi-Head
-        private void MultiHeadAnBnTuringMachine(int n, bool hasWait)
+        #region Two-Head
+        private void TwoHeadAnBnTuringMachine(int n, bool hasWait)
         {
             var transitionFunction = new Dictionary<(string currentState, List<string> readSymbols), (string nextState, List<string> writeSymbols, List<Motion> motions)>
             {
@@ -238,7 +244,7 @@ namespace Assets._Scripts
                 Debug.Log($"Machine result: {(result ? $"Accepted" : "Rejected")}");
             }
         }
-        private void MultiHeadWreverseTuringMachine(string w, bool hasWait)
+        private void TwoHeadWreverseTuringMachine(string w, bool hasWait)
         {
             var transitionFunction = new Dictionary<(string currentState, List<string> readSymbols), (string nextState, List<string> writeSymbols, List<Motion> motions)>
             {
@@ -328,13 +334,147 @@ namespace Assets._Scripts
         }
         #endregion
 
+        #region Three-Head
+        private void ThreeHeadTwoPowerNTuringMachine(int n, bool hasWait)
+        {
+            var transitionFunction = new Dictionary<(string currentState, List<string> readSymbols), (string nextState, List<string> writeSymbols, List<Motion> motions)>
+            {
+                //q0
+                {
+                    ("q0", new List<string> { "1", "1", "1" }),
+                    ("q1", new List<string> { "1", "1", "_" }, new List<Motion> { Motion.R, Motion.R, Motion.R  })
+                },
+
+                {
+                    ("q0", new List<string> { "_", "_", "_" }),
+                    ("qf", new List<string> { "_", "_", "1" }, new List<Motion> { Motion.R, Motion.R, Motion.R })
+                },
+
+                //q1
+                {
+                    ("q1", new List<string> { "1", "1", "1" }),
+                    ("q1", new List<string> { "1", "1", "1" }, new List<Motion> { Motion.S, Motion.R, Motion.R })
+                },
+
+                {
+                    ("q1", new List<string> { "1", "_", "_" }),
+                    ("q2", new List<string> { "1", "_", "0" }, new List<Motion> { Motion.S, Motion.R, Motion.R  })
+                },
+
+                {
+                    ("q1", new List<string> { "_", "_", "_" }),
+                    ("q2", new List<string> { "_", "_", "0" }, new List<Motion> { Motion.S, Motion.R, Motion.R })
+                },
+
+                //q2
+                {
+                    ("q2", new List<string> { "0", "_", "_" }),
+                    ("q3", new List<string> { "0", "_", "1" }, new List<Motion> { Motion.S, Motion.S, Motion.R })
+                },
+
+                {
+                    ("q2", new List<string> { "1", "_", "_" }),
+                    ("q3", new List<string> { "1", "_", "1" }, new List<Motion> { Motion.S, Motion.S, Motion.R })
+                },
+
+               
+                //q3
+                {
+                    ("q3", new List<string> { "0", "1", "_" }),
+                    ("q4", new List<string> { "0", "1", "1" }, new List<Motion> { Motion.S, Motion.S, Motion.R })
+                },
+
+                {
+                    ("q3", new List<string> { "1", "1", "_" }),
+                    ("q4", new List<string> { "1", "1", "1" }, new List<Motion> { Motion.S, Motion.S, Motion.R })
+                },
+
+                //q4
+                {
+                    ("q4", new List<string> { "1", "1", "_" }),
+                    ("q5", new List<string> { "1", "1", "x" }, new List<Motion> { Motion.S, Motion.S, Motion.R })
+                },
+
+                {
+                    ("q4", new List<string> { "0", "1", "_" }),
+                    ("qf", new List<string> { "_", "1", "_" }, new List<Motion> { Motion.S, Motion.S, Motion.S })
+                },
+
+                //q5
+                {
+                    ("q5", new List<string> { "1", "1", "_" }),
+                    ("q5", new List<string> { "1", "1", "1" }, new List<Motion> { Motion.S, Motion.R, Motion.R })
+                },
+
+                {
+                    ("q5", new List<string> { "1", "x", "_" }),
+                    ("q6", new List<string> { "1", "1", "_" }, new List<Motion> { Motion.S, Motion.L, Motion.L })
+                },
+
+                {
+                    ("q5", new List<string> { "0", "1", "_" }),
+                    ("q8", new List<string> { "_", "1", "_" }, new List<Motion> { Motion.S, Motion.S, Motion.L })
+                },
+
+                //q6
+                {
+                    ("q6", new List<string> { "1", "1", "1" }),
+                    ("q7", new List<string> { "1", "1", "_" }, new List<Motion> { Motion.S, Motion.S, Motion.S })
+                },
+                //q7
+                {
+                    ("q7", new List<string> { "1", "1", "_" }),
+                    ("q7", new List<string> { "1", "1", "_" }, new List<Motion> { Motion.S, Motion.L, Motion.S })
+                },
+                {
+                    ("q7", new List<string> { "1", "0", "_" }),
+                    ("q5", new List<string> { "_", "0", "x" }, new List<Motion> { Motion.R, Motion.R, Motion.R })
+                },
+                //q8
+                {
+                    ("q8", new List<string> { "_", "1", "x" }),
+                    ("qf", new List<string> { "_", "1", "_" }, new List<Motion> { Motion.S, Motion.S, Motion.S })
+                },
+            };
+
+            var inputAlphabet = new HashSet<string> { "1"};
+            var tapeAlphabet = new HashSet<string> { "1", "0", "x", "_" };
+
+            var inp = new string('1', n);
+
+            var tapeInp = inp;
+
+            var turingMachine = new MultiHeadTuringMachine(
+                _gridManager,
+                tapeInp,
+                inputAlphabet,
+                tapeAlphabet,
+                transitionFunction,
+                "q0",
+                "qf",
+                3,
+                hasWait
+            );
+
+            if (hasWait)
+            {
+                turingMachine.StartMachineWithDelay(this, _delay);
+            }
+            else
+            {
+                var result = turingMachine.StartMachine();
+                Debug.Log($"Machine result: {(result ? $"Accepted" : "Rejected")}");
+            }
+        }
+        #endregion
+
         #region Processor
         private void CompareAnBn(int n)
         {
             Debug.Log($"Comparing a^n b^n for n={n}:");
 
             var standardTime = MeasureExecutionTime(() => StandardAnBnTuringMachine(n, false));
-            var multiHeadTime = MeasureExecutionTime(() => MultiHeadAnBnTuringMachine(n, false));
+            var multiHeadTime = MeasureExecutionTime(() => TwoHeadAnBnTuringMachine(n, false));
 
             Debug.Log($"Standard Turing Machine: {standardTime} ms");
             Debug.Log($"Multi-Head Turing Machine: {multiHeadTime} ms");
@@ -345,7 +485,7 @@ namespace Assets._Scripts
             Debug.Log($"Comparing w^R for |w| = {w.Length}");
 
             var standardTime = MeasureExecutionTime(() => StandardWreverseTuringMachine(w, false));
-            var multiHeadTime = MeasureExecutionTime(() => MultiHeadWreverseTuringMachine(w, false));
+            var multiHeadTime = MeasureExecutionTime(() => TwoHeadWreverseTuringMachine(w, false));
 
             Debug.Log($"Standard Turing Machine: {standardTime} ms");
             Debug.Log($"Multi-Head Turing Machine: {multiHeadTime} ms");

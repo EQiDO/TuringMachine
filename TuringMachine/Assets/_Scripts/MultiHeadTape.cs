@@ -122,6 +122,11 @@ namespace Assets._Scripts
 
         private void InitializeTape(string tapeInput, HashSet<string> inputAlphabet)
         {
+            if (tapeInput.Length == 0)
+            {
+                _tape.Add("_");
+                return;
+            }
             foreach (var character in tapeInput)
             {
                 var ch = character.ToString();
