@@ -164,6 +164,10 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: b4b1c984d1347304095ff40a488c48ef, type: 2}
   - symbol: _
     material: {fileID: 2100000, guid: 68b53ddf40e3fde429e20086c43d25ee, type: 2}
+  - symbol: 1
+    material: {fileID: 2100000, guid: 8755a08ebe212194a833b94f06cf6b15, type: 2}
+  - symbol: 0
+    material: {fileID: 2100000, guid: f2006c59a47712e4b8c28cc5d4d7ce14, type: 2}
 --- !u!4 &92600313
 Transform:
   m_ObjectHideFlags: 0
