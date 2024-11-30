@@ -10,12 +10,6 @@ namespace Assets._Scripts
         private readonly List<string> _tape;
         #endregion
 
-        #region Private Variables
-        private int _size;
-        private readonly int _headCount;
-        private readonly List<int> _headPositions;
-        #endregion
-
         #region Ctor
         public MultiHeadTape(string tapeInput, HashSet<string> inputAlphabet, int headCount)
         {
@@ -28,6 +22,18 @@ namespace Assets._Scripts
             _headCount = headCount;
             InitializeTape(tapeInput, inputAlphabet);
         }
+        #endregion
+
+        #region Private Variables
+        private int _size;
+        private readonly int _headCount;
+        private readonly List<int> _headPositions;
+        #endregion
+
+        #region Public Variables
+        public List<string> GetTapeSymbols() => _tape;
+        public List<int> GetHeadPositions() => _headPositions;
+        public int TapeLength() => _tape.Count;
         #endregion
 
         #region Public Methods
@@ -47,7 +53,7 @@ namespace Assets._Scripts
             for (var i = 0; i < _headCount; i++)
             {
                 var head = _headPositions[i];
-                if (head >= _tape.Count)
+                if (head >=_size)
                     headReads.Add("_");
                 else
                 {
@@ -57,9 +63,6 @@ namespace Assets._Scripts
 
             return headReads;
         }
-        public List<string> GetTapeSymbols() => _tape;
-        public List<int> GetHeadPositions() => _headPositions;
-
 
         public void Write(List<string> symbols, HashSet<string> tapeAlphabet, List<Motion> motions)
         {
@@ -71,9 +74,12 @@ namespace Assets._Scripts
 
                 if (!tapeAlphabet.Contains(symbol))
                     throw new ArgumentException($"The symbol '{symbol}' is not in the tape alphabet.");
+
+                _tape[head] = symbol;
+
                 if (head < _size)
                 {
-                    _tape[head] = symbol;
+                    
                 }
                 else
                 {
@@ -86,10 +92,6 @@ namespace Assets._Scripts
 
         }
 
-        public int TapeLength()
-        {
-            return _tape.Count;
-        }
         #endregion
 
         #region Private Methods
@@ -97,20 +99,23 @@ namespace Assets._Scripts
         {
             var newHead = head + (int)motion;
 
-            if (newHead < 0)
+            if(newHead >= _size)
+            {
+                _tape.Add("_");
+                _size++;
+            }
+
+            else if (newHead < 0)
             {
                 _tape.Insert(0, "_");
                 _size++;
-
-                // Adjust all head positions to account for the shift
+                newHead = 0;
                 for (var i = 0; i < _headPositions.Count; i++)
                 {
+                    if (i == newHead) continue;
                     _headPositions[i]++;
                 }
-
-                newHead = 0;
             }
-
             return newHead;
         }
 

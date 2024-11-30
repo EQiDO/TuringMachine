@@ -10,10 +10,8 @@ namespace Assets._Scripts
     {
         #region Private Variables
 
-        private HashSet<string> _inputAlphabet;
         private HashSet<string> _tapeAlphabet;
         private readonly Dictionary<(string currentState, List<string> readSymbols), (string nextState, List<string> writeSymbols, List<Motion> motions)> _transitionFunction;
-        //private string _initialState;
         private string _acceptState;
         private readonly GridManager _gridManager;
 
@@ -34,7 +32,6 @@ namespace Assets._Scripts
             int headCount,
             bool hasWait)
         {
-            _inputAlphabet = inputAlphabet;
             _tapeAlphabet = tapeAlphabet;
             _transitionFunction = transitionFunction;
             _acceptState = acceptState;
@@ -144,6 +141,5 @@ namespace Assets._Scripts
             }
         }
         #endregion
-
     }
 }

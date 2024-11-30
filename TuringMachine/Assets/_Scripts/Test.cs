@@ -9,10 +9,13 @@ namespace Assets._Scripts
 {
     public class Test : MonoBehaviour
     {
-        private readonly HashSet<string> _inputAlphabet = new HashSet<string> { "a", "b", "c"};
+        #region Private Variables
+        private readonly HashSet<string> _inputAlphabet = new HashSet<string> { "a", "b", "c" };
         private GridManager _gridManager;
         [SerializeField] private float _delay = 0.5f;
+        #endregion
 
+        #region Private Methods
         private void Awake()
         {
             _gridManager = FindObjectOfType<GridManager>();
@@ -20,29 +23,34 @@ namespace Assets._Scripts
 
         void Start()
         {
-            //CompareAnBn(10000);
+            //CompareAnBn(1000);
             //var time = MeasureExecutionTime(() => StandardWreverseTuringMachine(RandomCharacter(300, _inputAlphabet.ToList()), false));
             //print(time);
             //CompareWReverse(RandomCharacter(300, _inputAlphabet.ToList()));
             //StandardAnBnTuringMachine(5, true);
-            //MultiHeadAnBnTuringMachine(5, true);
-            StandardWreverseTuringMachine(RandomCharacter(5, _inputAlphabet.ToList()), true);
+            MultiHeadAnBnTuringMachine(5, true);
+            //StandardWreverseTuringMachine(RandomCharacter(5, _inputAlphabet.ToList()), true);
             //MultiHeadWreverseTuringMachine(RandomCharacter(5, _inputAlphabet.ToList()), true);
         }
+        #endregion
 
         #region Standard
         private void StandardAnBnTuringMachine(int n, bool hasWait)
         {
             var transitionFunction = new Dictionary<(string state, string symbol), (string nextState, string writeSymbol, Motion motion)>
             {
+                //q0
                 { ("q0", "a"), ("q1", "x", Motion.R) },
                 { ("q0", "y"), ("q3", "y", Motion.R) },
+                //q1
                 { ("q1", "a"), ("q1", "a", Motion.R) },
                 { ("q1", "y"), ("q1", "y", Motion.R) },
                 { ("q1", "b"), ("q2", "y", Motion.L) },
+                //q2
                 { ("q2", "a"), ("q2", "a", Motion.L) },
                 { ("q2", "y"), ("q2", "y", Motion.L) },
                 { ("q2", "x"), ("q0", "x", Motion.R) },
+                //q3
                 { ("q3", "y"), ("q3", "y", Motion.R) },
                 { ("q3", "_"), ("qf", "_", Motion.L) }
             };
@@ -66,7 +74,6 @@ namespace Assets._Scripts
                 hasWait
             );
 
-            // Run the machine
             if (hasWait)
             {
                 turingMachine.StartMachineWithDelay(this, _delay);
@@ -146,7 +153,6 @@ namespace Assets._Scripts
                 { ("q9", "c"), ("qf", "c", Motion.R) },
             };
 
-            //var inputAlphabet = new HashSet<string> { "a", "b", "c" };
             var tapeAlphabet = new HashSet<string> { "a", "b", "c", "x", "_" };
 
             var tapeInput = w;
@@ -180,6 +186,7 @@ namespace Assets._Scripts
         {
             var transitionFunction = new Dictionary<(string currentState, List<string> readSymbols), (string nextState, List<string> writeSymbols, List<Motion> motions)>
             {
+                //q0
                 {
                     ("q0", new List<string> { "a", "a" }),
                     ("q0", new List<string> { "a", "a" }, new List<Motion> { Motion.S, Motion.R })
@@ -293,10 +300,7 @@ namespace Assets._Scripts
                 },
             };
 
-            //var inputAlphabet = new HashSet<string> { "a", "b", "c" };
             var tapeAlphabet = new HashSet<string> { "a", "b", "c", "_" };
-
-            //var chars = inputAlphabet.ToList();
 
             var tapeInput = w;
 

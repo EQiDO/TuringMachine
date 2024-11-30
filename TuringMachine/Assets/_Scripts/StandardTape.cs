@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Assets._Scripts
 {
@@ -14,11 +13,13 @@ namespace Assets._Scripts
         private int _size;
         private int _head;
         #endregion
+
         #region Public Variables
         public int HeadPosition => _head;
         public List<string> GetTapeSymbols() => _tape;
 
         #endregion
+
         #region Ctor
         public StandardTape(string tapeInput, HashSet<string> inputAlphabet)
         {
@@ -42,7 +43,7 @@ namespace Assets._Scripts
 
         public string Read()
         {
-            if (_head >= _tape.Count)
+            if (_head >= _size)
                 return "_";
             return _tape[_head];
         }
@@ -52,15 +53,7 @@ namespace Assets._Scripts
         {
             if(!tapeAlphabet.Contains(symbol))
                 throw new ArgumentException($"The symbol '{symbol}' is not in the tape alphabet.");
-            if (_head < _size)
-            {
-                _tape[_head] = symbol;
-            }
-            else
-            {
-                _tape.Add(symbol);
-                _size++;
-            }
+            _tape[_head] = symbol;
             MoveHead(motion);
         }
 
@@ -70,14 +63,17 @@ namespace Assets._Scripts
         private void MoveHead(Motion motion)
         {
             var newHead = _head + (int)motion;
-
-            if (newHead < 0)
+            if(newHead >= _size)
+            {
+                _tape.Add("_");
+                _size++;
+            }
+            else if (newHead < 0)
             {
                 _tape.Insert(0, "_");
                 _size++;
                 newHead = 0;
             }
-
             _head = newHead;
         }
 
