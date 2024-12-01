@@ -53,12 +53,7 @@ namespace Assets._Scripts
             for (var i = 0; i < _headCount; i++)
             {
                 var head = _headPositions[i];
-                if (head >=_size)
-                    headReads.Add("_");
-                else
-                {
-                    headReads.Add(_tape[head]);
-                }
+                headReads.Add(_tape[head]);
             }
 
             return headReads;
@@ -125,6 +120,7 @@ namespace Assets._Scripts
             if (tapeInput.Length == 0)
             {
                 _tape.Add("_");
+                _size++;
                 return;
             }
             foreach (var character in tapeInput)

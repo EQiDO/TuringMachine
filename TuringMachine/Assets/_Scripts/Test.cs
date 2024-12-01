@@ -24,7 +24,7 @@ namespace Assets._Scripts
         void Start()
         {
             // Compare
-            CompareAnBn(1000);
+            //CompareAnBn(1000);
             //CompareWReverse(RandomCharacter(300, _inputAlphabet.ToList()));
 
             // Standard
@@ -36,7 +36,7 @@ namespace Assets._Scripts
             //TwoHeadWreverseTuringMachine(RandomCharacter(5, _inputAlphabet.ToList()), true);
 
             //Three-Head
-            //ThreeHeadTwoPowerNTuringMachine(3, true);
+            ThreeHeadTwoPowerNTuringMachine(2, true);
         }
         #endregion
 
@@ -58,7 +58,7 @@ namespace Assets._Scripts
                 { ("q2", "x"), ("q0", "x", Motion.R) },
                 //q3
                 { ("q3", "y"), ("q3", "y", Motion.R) },
-                { ("q3", "_"), ("qf", "_", Motion.L) }
+                { ("q3", "_"), ("qf", "_", Motion.S) }
             };
 
             var inputAlphabet = new HashSet<string> { "a", "b" };
@@ -154,9 +154,9 @@ namespace Assets._Scripts
 
                 //q9
                 { ("q9", "x"), ("q9", "_", Motion.R) },
-                { ("q9", "a"), ("qf", "a", Motion.R) },
-                { ("q9", "b"), ("qf", "b", Motion.R) },
-                { ("q9", "c"), ("qf", "c", Motion.R) },
+                { ("q9", "a"), ("qf", "a", Motion.S) },
+                { ("q9", "b"), ("qf", "b", Motion.S) },
+                { ("q9", "c"), ("qf", "c", Motion.S) },
             };
 
             var tapeAlphabet = new HashSet<string> { "a", "b", "c", "x", "_" };
@@ -347,7 +347,7 @@ namespace Assets._Scripts
 
                 {
                     ("q0", new List<string> { "_", "_", "_" }),
-                    ("qf", new List<string> { "_", "_", "1" }, new List<Motion> { Motion.R, Motion.R, Motion.R })
+                    ("qf", new List<string> { "_", "_", "1" }, new List<Motion> { Motion.S, Motion.S, Motion.S })
                 },
 
                 //q1

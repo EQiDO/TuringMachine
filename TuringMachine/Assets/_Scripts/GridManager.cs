@@ -79,7 +79,7 @@ namespace Assets._Scripts
                 Debug.LogWarning($"No material found for symbol '{symbol}' at index {cellIndex}");
             }
         }
-        public void UpdateHeadCellsColor(int headPosition)
+        private void UpdateHeadCellsColor(int headPosition)
         {
             foreach (var cell in _grid)
             {
@@ -87,11 +87,11 @@ namespace Assets._Scripts
             }
             if (headPosition >= 0 && headPosition < _grid.Count)
             {
-                _grid[headPosition].GetComponent<MeshRenderer>().material.color = Color.green;
+                _grid[headPosition].GetComponent<MeshRenderer>().material.color =  Color.green;
             }
         }
 
-        public void UpdateHeadsCellsColor(List<int> headPositions)
+        private void UpdateHeadsCellsColor(List<int> headPositions)
         {
             foreach (var cell in _grid)
             {

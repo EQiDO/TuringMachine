@@ -98,6 +98,10 @@ namespace Assets._Scripts
 
         private IEnumerator RunMachineWithDelay(float delay)
         {
+            var headPosition = new List<int> { tape.HeadPosition };
+            _gridManager.UpdateGrid(tape.GetTapeSymbols(), headPosition);
+
+            yield return new WaitForSeconds(delay/2);
             while (true)
             {
                 if (!_transitionFunction.TryGetValue((_currentState, tape.Read()), out var transitionValue))
@@ -111,7 +115,7 @@ namespace Assets._Scripts
                 try
                 {
                     ApplyTransition(transitionValue);
-                    var headPosition = new List<int> { tape.HeadPosition };
+                    headPosition = new List<int> { tape.HeadPosition };
                     _gridManager.UpdateGrid(tape.GetTapeSymbols(), headPosition);
                 }
                 catch (Exception e)

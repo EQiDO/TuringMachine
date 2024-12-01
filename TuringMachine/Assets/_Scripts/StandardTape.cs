@@ -43,8 +43,6 @@ namespace Assets._Scripts
 
         public string Read()
         {
-            if (_head >= _size)
-                return "_";
             return _tape[_head];
         }
 
@@ -82,6 +80,7 @@ namespace Assets._Scripts
             if (tapeInput.Length == 0)
             {
                 _tape.Add("_");
+                _size++;
                 return;
             }
             foreach (var character in tapeInput)
