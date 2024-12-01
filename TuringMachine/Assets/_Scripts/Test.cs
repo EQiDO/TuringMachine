@@ -32,11 +32,11 @@ namespace Assets._Scripts
             //StandardWreverseTuringMachine(RandomCharacter(5, _inputAlphabet.ToList()), true);
 
             // Two-Head
-            //TwoHeadAnBnTuringMachine(5, true);
+            TwoHeadAnBnTuringMachine(5, true);
             //TwoHeadWreverseTuringMachine(RandomCharacter(5, _inputAlphabet.ToList()), true);
 
             //Three-Head
-            ThreeHeadTwoPowerNTuringMachine(2, true);
+            //ThreeHeadTwoPowerNTuringMachine(2, true);
         }
         #endregion
 
@@ -64,14 +64,11 @@ namespace Assets._Scripts
             var inputAlphabet = new HashSet<string> { "a", "b" };
             var tapeAlphabet = new HashSet<string> { "a", "b", "x", "y", "_" };
 
-            var aPart = new string('a', n);
-            var bPart = new string('b', n);
-
-            var tapeInp = aPart + bPart;
+            var tapeInput = new string('a', n) + new string('b', n);
 
             var turingMachine = new StandardTuringMachine(
                 _gridManager,
-                tapeInp,
+                tapeInput,
                 inputAlphabet,
                 tapeAlphabet,
                 transitionFunction,
@@ -217,14 +214,11 @@ namespace Assets._Scripts
             var inputAlphabet = new HashSet<string> { "a", "b" };
             var tapeAlphabet = new HashSet<string> { "a", "b", "_" };
 
-            var aPart = new string('a', n);
-            var bPart = new string('b', n);
-
-            var tapeInp = aPart + bPart;
+            var tapeInput = new string('a', n) + new string('b', n);
 
             var turingMachine = new MultiHeadTuringMachine(
                 _gridManager,
-                tapeInp,
+                tapeInput,
                 inputAlphabet,
                 tapeAlphabet,
                 transitionFunction,

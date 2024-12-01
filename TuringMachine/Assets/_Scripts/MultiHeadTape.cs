@@ -72,15 +72,6 @@ namespace Assets._Scripts
 
                 _tape[head] = symbol;
 
-                if (head < _size)
-                {
-                    
-                }
-                else
-                {
-                    _tape.Add(symbol);
-                    _size++;
-                }
                 var newHead = MoveHead(head, motion);
                 _headPositions[i] = newHead;
             }
