@@ -122,67 +122,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &92600311
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 92600313}
-  - component: {fileID: 92600312}
-  m_Layer: 0
-  m_Name: SymbolMaterials
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &92600312
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 92600311}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e9e4b9ec1addea4abaea7e0594e168d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _symbolMaterials:
-  - symbol: a
-    material: {fileID: 2100000, guid: 51738a75c6260524f906df80d064660d, type: 2}
-  - symbol: b
-    material: {fileID: 2100000, guid: 49d1ab2ab0d7e164b9212dd76ca196e2, type: 2}
-  - symbol: c
-    material: {fileID: 2100000, guid: 52e61d90a04628e4291dab513d8c31d1, type: 2}
-  - symbol: x
-    material: {fileID: 2100000, guid: b983a599d88794e418becdccc8ec061f, type: 2}
-  - symbol: y
-    material: {fileID: 2100000, guid: b4b1c984d1347304095ff40a488c48ef, type: 2}
-  - symbol: _
-    material: {fileID: 2100000, guid: 68b53ddf40e3fde429e20086c43d25ee, type: 2}
-  - symbol: 1
-    material: {fileID: 2100000, guid: 8755a08ebe212194a833b94f06cf6b15, type: 2}
-  - symbol: 0
-    material: {fileID: 2100000, guid: f2006c59a47712e4b8c28cc5d4d7ce14, type: 2}
---- !u!4 &92600313
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 92600311}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &417292932
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,7 +307,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -500,4 +439,3 @@ SceneRoots:
   - {fileID: 2059304310}
   - {fileID: 1783186786}
   - {fileID: 417292933}
-  - {fileID: 92600313}

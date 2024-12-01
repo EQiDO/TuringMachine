@@ -107,6 +107,11 @@ namespace Assets._Scripts
 
         private IEnumerator RunMachineWithDelay(float delay)
         {
+            var headPositions = tape.GetHeadPositions();
+            _gridManager.UpdateGrid(tape.GetTapeSymbols(), headPositions);
+
+            yield return new WaitForSeconds(delay/2);
+
             while (true)
             {
                 var transitionKey = (_currentState, tape.Read());
@@ -121,15 +126,14 @@ namespace Assets._Scripts
                 try
                 {
                     ApplyTransition(transitionValue);
+                    headPositions = tape.GetHeadPositions();
+                    _gridManager.UpdateGrid(tape.GetTapeSymbols(), headPositions);
                 }
                 catch (Exception e)
                 {
                     Debug.LogError($"Error while applying transition: {e}");
                     yield break;
                 }
-
-                var headPositions = tape.GetHeadPositions();
-                _gridManager.UpdateGrid(tape.GetTapeSymbols(), headPositions);
 
                 yield return new WaitForSeconds(delay);
 

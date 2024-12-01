@@ -25,15 +25,15 @@ namespace Assets._Scripts
         {
             // Compare
             CompareAnBn(1000);
-            //CompareWReverse(RandomCharacter(300, _inputAlphabet.ToList()));
+            //CompareWReverse(RandomCharacter(1000, _inputAlphabet.ToList()));
 
             // Standard
             //StandardAnBnTuringMachine(5, true);
-            //StandardWreverseTuringMachine(RandomCharacter(5, _inputAlphabet.ToList()), true);
+            //StandardWreverseTuringMachine(RandomCharacter(4, _inputAlphabet.ToList()), true);
 
             // Two-Head
             //TwoHeadAnBnTuringMachine(5, true);
-            //TwoHeadWreverseTuringMachine(RandomCharacter(5, _inputAlphabet.ToList()), true);
+            //TwoHeadWreverseTuringMachine(RandomCharacter(6, _inputAlphabet.ToList()), true);
 
             //Three-Head
             //ThreeHeadTwoPowerNTuringMachine(3, true);
@@ -58,20 +58,17 @@ namespace Assets._Scripts
                 { ("q2", "x"), ("q0", "x", Motion.R) },
                 //q3
                 { ("q3", "y"), ("q3", "y", Motion.R) },
-                { ("q3", "_"), ("qf", "_", Motion.L) }
+                { ("q3", "_"), ("qf", "_", Motion.S) }
             };
 
             var inputAlphabet = new HashSet<string> { "a", "b" };
             var tapeAlphabet = new HashSet<string> { "a", "b", "x", "y", "_" };
 
-            var aPart = new string('a', n);
-            var bPart = new string('b', n);
-
-            var tapeInp = aPart + bPart;
+            var tapeInput = new string('a', n) + new string('b', n);
 
             var turingMachine = new StandardTuringMachine(
                 _gridManager,
-                tapeInp,
+                tapeInput,
                 inputAlphabet,
                 tapeAlphabet,
                 transitionFunction,
@@ -154,9 +151,9 @@ namespace Assets._Scripts
 
                 //q9
                 { ("q9", "x"), ("q9", "_", Motion.R) },
-                { ("q9", "a"), ("qf", "a", Motion.R) },
-                { ("q9", "b"), ("qf", "b", Motion.R) },
-                { ("q9", "c"), ("qf", "c", Motion.R) },
+                { ("q9", "a"), ("qf", "a", Motion.S) },
+                { ("q9", "b"), ("qf", "b", Motion.S) },
+                { ("q9", "c"), ("qf", "c", Motion.S) },
             };
 
             var tapeAlphabet = new HashSet<string> { "a", "b", "c", "x", "_" };
@@ -217,14 +214,11 @@ namespace Assets._Scripts
             var inputAlphabet = new HashSet<string> { "a", "b" };
             var tapeAlphabet = new HashSet<string> { "a", "b", "_" };
 
-            var aPart = new string('a', n);
-            var bPart = new string('b', n);
-
-            var tapeInp = aPart + bPart;
+            var tapeInput = new string('a', n) + new string('b', n);
 
             var turingMachine = new MultiHeadTuringMachine(
                 _gridManager,
-                tapeInp,
+                tapeInput,
                 inputAlphabet,
                 tapeAlphabet,
                 transitionFunction,
@@ -347,7 +341,7 @@ namespace Assets._Scripts
 
                 {
                     ("q0", new List<string> { "_", "_", "_" }),
-                    ("qf", new List<string> { "_", "_", "1" }, new List<Motion> { Motion.R, Motion.R, Motion.R })
+                    ("qf", new List<string> { "_", "_", "1" }, new List<Motion> { Motion.S, Motion.S, Motion.S })
                 },
 
                 //q1

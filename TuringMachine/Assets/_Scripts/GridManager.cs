@@ -1,23 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 namespace Assets._Scripts
 {
     public class GridManager : MonoBehaviour
     {
         #region Private Variables
-        private List<GameObject> _grid = new List<GameObject>();
-        private readonly float _spacing = 1;
-        private SymbolMaterials _symbolMaterials;
+        private readonly List<GameObject> _grid = new();
+        private const float Spacing = 1;
         [SerializeField] private GameObject _cellObj;
         [SerializeField] private GameObject _cellsHolder;
-        #endregion
-
-        #region Private Methods
-        void Start()
-        {
-            _symbolMaterials = FindObjectOfType<SymbolMaterials>();
-        }
 
         #endregion
 
@@ -26,11 +19,12 @@ namespace Assets._Scripts
         {
             for (var i = 0; i < tapeSymbols.Count; i++)
             {
-                var cell = Instantiate(_cellObj, new Vector3(i * _spacing, 0, 0), Quaternion.identity);
+                var cell = Instantiate(_cellObj, new Vector3(i * Spacing, 0, 0), Quaternion.identity);
                 cell.transform.parent = _cellsHolder.transform;
                 _grid.Add(cell);
-                UpdateCell(i, tapeSymbols[i]);
+                UpdateCellSymbol(i, tapeSymbols[i]);
             }
+
         }
 
         public void UpdateGrid(List<string> tapeSymbols, List<int> headPositions)
@@ -39,7 +33,7 @@ namespace Assets._Scripts
 
             while (_grid.Count < tapeLength)
             {
-                var newCell = Instantiate(_cellObj, new Vector3(_grid.Count * _spacing, 0, 0), Quaternion.identity);
+                var newCell = Instantiate(_cellObj, new Vector3(_grid.Count * Spacing, 0, 0), Quaternion.identity);
                 newCell.transform.parent = _cellsHolder.transform;
                 _grid.Add(newCell);
             }
@@ -54,8 +48,7 @@ namespace Assets._Scripts
             for (var i = 0; i < tapeLength; i++)
             {
                 var symbol = tapeSymbols[i];
-
-                UpdateCell(i, symbol);
+                UpdateCellSymbol(i, symbol);
             }
             if (headPositions.Count == 1)
             {
@@ -67,19 +60,15 @@ namespace Assets._Scripts
             }
         }
 
-        public void UpdateCell(int cellIndex, string symbol)
+        public void UpdateCellSymbol(int cellIndex, string symbol)
         {
-
-            if (_symbolMaterials.symbolMaterialDict.TryGetValue(symbol, out var material))
-            {
-                _grid[cellIndex].GetComponent<MeshRenderer>().material = material;
-            }
-            else
-            {
-                Debug.LogWarning($"No material found for symbol '{symbol}' at index {cellIndex}");
-            }
+            _grid[cellIndex].GetComponentInChildren<TMP_Text>().text = symbol;
         }
-        public void UpdateHeadCellsColor(int headPosition)
+
+        #endregion
+
+        #region Private Methods
+        private void UpdateHeadCellsColor(int headPosition)
         {
             foreach (var cell in _grid)
             {
@@ -91,7 +80,7 @@ namespace Assets._Scripts
             }
         }
 
-        public void UpdateHeadsCellsColor(List<int> headPositions)
+        private void UpdateHeadsCellsColor(List<int> headPositions)
         {
             foreach (var cell in _grid)
             {
@@ -125,7 +114,7 @@ namespace Assets._Scripts
                 }
                 else
                 {
-                    _grid[headIndex].GetComponent<MeshRenderer>().material.color = headColors[i % headColors.Count];
+                    _grid[headIndex].GetComponent<MeshRenderer>().material.color = headColors[i];
                 }
             }
         }

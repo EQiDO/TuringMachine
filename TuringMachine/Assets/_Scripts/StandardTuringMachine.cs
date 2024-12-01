@@ -17,7 +17,7 @@ namespace Assets._Scripts
         private readonly GridManager _gridManager;
 
         private string _currentState;
-        public StandardTape tape;
+        private StandardTape _tape;
         #endregion
 
         #region Ctor
@@ -42,14 +42,12 @@ namespace Assets._Scripts
         #endregion
 
         #region Private Methods
-
         private void InitializeMachine(string initialState, string tapeInput, HashSet<string> inputAlphabet, bool hasWait)
         {
             _currentState = initialState;
-            tape = new StandardTape(tapeInput, inputAlphabet);
+            _tape = new StandardTape(tapeInput, inputAlphabet);
             if(hasWait)
-                _gridManager.AddCells(tape.GetTapeSymbols());
-
+                _gridManager.AddCells(_tape.GetTapeSymbols());
         }
 
         private void ApplyTransition((string nextState, string writeSymbol, Motion motion) transitionValue)
@@ -57,7 +55,7 @@ namespace Assets._Scripts
             var (nextState, writeSymbol, motion) = transitionValue;
 
             _currentState = nextState;
-            tape.Write(writeSymbol, _tapeAlphabet, motion);
+            _tape.Write(writeSymbol, _tapeAlphabet, motion);
         }
         #endregion
 
@@ -69,7 +67,7 @@ namespace Assets._Scripts
             while (true)
             {
 
-                if (!_transitionFunction.TryGetValue((_currentState, tape.Read()), out var transitionValue))
+                if (!_transitionFunction.TryGetValue((_currentState, _tape.Read()), out var transitionValue))
                 {
                     Debug.LogError("No transition available. Machine halted.");
                     return _currentState == _acceptState;
@@ -98,9 +96,13 @@ namespace Assets._Scripts
 
         private IEnumerator RunMachineWithDelay(float delay)
         {
+            var headPosition = new List<int> { _tape.HeadPosition };
+            _gridManager.UpdateGrid(_tape.GetTapeSymbols(), headPosition);
+
+            yield return new WaitForSeconds(delay/2);
             while (true)
             {
-                if (!_transitionFunction.TryGetValue((_currentState, tape.Read()), out var transitionValue))
+                if (!_transitionFunction.TryGetValue((_currentState, _tape.Read()), out var transitionValue))
                 {
                     Debug.LogError("No transition available. Machine halted.");
                     yield break;
@@ -111,8 +113,8 @@ namespace Assets._Scripts
                 try
                 {
                     ApplyTransition(transitionValue);
-                    var headPosition = new List<int> { tape.HeadPosition };
-                    _gridManager.UpdateGrid(tape.GetTapeSymbols(), headPosition);
+                    headPosition = new List<int> { _tape.HeadPosition };
+                    _gridManager.UpdateGrid(_tape.GetTapeSymbols(), headPosition);
                 }
                 catch (Exception e)
                 {
