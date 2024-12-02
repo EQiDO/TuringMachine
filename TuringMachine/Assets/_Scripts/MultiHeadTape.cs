@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets._Scripts
@@ -8,6 +9,20 @@ namespace Assets._Scripts
     {
         #region Internal Fields
         private readonly List<string> _tape;
+        #endregion
+
+        #region Private Variables
+        private int _size;
+        private readonly int _headCount;
+        private readonly List<int> _headPositions;
+        #endregion
+
+        #region Public Variables
+        public List<string> GetTapeSymbols() => _tape;
+
+        public List<int> GetHeadPositions() => _headPositions;
+
+        public int TapeLength() => _tape.Count;
         #endregion
 
         #region Ctor
@@ -24,40 +39,11 @@ namespace Assets._Scripts
         }
         #endregion
 
-        #region Private Variables
-        private int _size;
-        private readonly int _headCount;
-        private readonly List<int> _headPositions;
-        #endregion
-
-        #region Public Variables
-        public List<string> GetTapeSymbols() => _tape;
-        public List<int> GetHeadPositions() => _headPositions;
-        public int TapeLength() => _tape.Count;
-        #endregion
-
         #region Public Methods
+        public string ShowTape() => string.Concat(_tape);
 
-        public string ShowTape()
-        {
-            var str = "";
-            foreach (var a in _tape)
-            {
-                str += a;
-            }
-            return str;
-        }
-        public List<string> Read()
-        {
-            var headReads = new List<string>();
-            for (var i = 0; i < _headCount; i++)
-            {
-                var head = _headPositions[i];
-                headReads.Add(_tape[head]);
-            }
-
-            return headReads;
-        }
+        public List<string> Read() =>
+            _headPositions.Select(head => _tape[head]).ToList();
 
         public void Write(List<string> symbols, HashSet<string> tapeAlphabet, List<Motion> motions)
         {
@@ -117,7 +103,8 @@ namespace Assets._Scripts
             foreach (var character in tapeInput)
             {
                 var ch = character.ToString();
-                if (!inputAlphabet.Contains(ch)) throw new ArgumentException($"The symbol '{ch}' is not in the input alphabet."); ;
+                if (!inputAlphabet.Contains(ch))
+                    throw new ArgumentException($"The symbol '{ch}' is not in the input alphabet."); ;
                 _tape.Add(ch);
                 _size++;
             }

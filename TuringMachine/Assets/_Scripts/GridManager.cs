@@ -48,7 +48,6 @@ namespace Assets._Scripts
             for (var i = 0; i < tapeLength; i++)
             {
                 var symbol = tapeSymbols[i];
-
                 UpdateCellSymbol(i, symbol);
             }
             if (headPositions.Count == 1)
@@ -63,8 +62,7 @@ namespace Assets._Scripts
 
         public void UpdateCellSymbol(int cellIndex, string symbol)
         {
-            var text = _grid[cellIndex].GetComponentInChildren<TMP_Text>();
-            text.text = symbol;
+            _grid[cellIndex].GetComponentInChildren<TMP_Text>().text = symbol;
         }
 
         #endregion
@@ -116,7 +114,7 @@ namespace Assets._Scripts
                 }
                 else
                 {
-                    _grid[headIndex].GetComponent<MeshRenderer>().material.color = headColors[i % headColors.Count];
+                    _grid[headIndex].GetComponent<MeshRenderer>().material.color = headColors[i];
                 }
             }
         }

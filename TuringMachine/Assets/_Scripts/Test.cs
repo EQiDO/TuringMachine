@@ -24,19 +24,19 @@ namespace Assets._Scripts
         void Start()
         {
             // Compare
-            //CompareAnBn(1000);
-            //CompareWReverse(RandomCharacter(300, _inputAlphabet.ToList()));
+            CompareAnBn(1000);
+            //CompareWReverse(RandomCharacter(1000, _inputAlphabet.ToList()));
 
             // Standard
             //StandardAnBnTuringMachine(5, true);
-            //StandardWreverseTuringMachine(RandomCharacter(5, _inputAlphabet.ToList()), true);
+            //StandardWreverseTuringMachine(RandomCharacter(4, _inputAlphabet.ToList()), true);
 
             // Two-Head
-            TwoHeadAnBnTuringMachine(5, true);
-            //TwoHeadWreverseTuringMachine(RandomCharacter(5, _inputAlphabet.ToList()), true);
+            //TwoHeadAnBnTuringMachine(5, true);
+            //TwoHeadWreverseTuringMachine(RandomCharacter(6, _inputAlphabet.ToList()), true);
 
             //Three-Head
-            //ThreeHeadTwoPowerNTuringMachine(2, true);
+            //ThreeHeadTwoPowerNTuringMachine(3, true);
         }
         #endregion
 

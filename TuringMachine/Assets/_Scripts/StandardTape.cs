@@ -31,21 +31,9 @@ namespace Assets._Scripts
 
         #region Public Methods
 
-        public string ShowTape()
-        {
-            var str = "";
-            foreach (var a in _tape)
-            {
-                str += a;
-            }
-            return str;
-        }
+        public string ShowTape() => string.Concat(_tape);
 
-        public string Read()
-        {
-            return _tape[_head];
-        }
-
+        public string Read() => _tape[_head];
 
         public void Write(string symbol, HashSet<string> tapeAlphabet, Motion motion)
         {
@@ -61,6 +49,7 @@ namespace Assets._Scripts
         private void MoveHead(Motion motion)
         {
             var newHead = _head + (int)motion;
+
             if(newHead >= _size)
             {
                 _tape.Add("_");
@@ -86,7 +75,8 @@ namespace Assets._Scripts
             foreach (var character in tapeInput)
             {
                 var ch = character.ToString();
-                if (!inputAlphabet.Contains(ch)) throw new ArgumentException($"The symbol '{ch}' is not in the tape alphabet.");
+                if (!inputAlphabet.Contains(ch))
+                    throw new ArgumentException($"The symbol '{ch}' is not in the tape alphabet.");
                 _tape.Add(ch);
                 _size++;
             }
