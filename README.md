@@ -45,7 +45,7 @@ This project implements two Turing Machine variations:
 
 ## Visual Examples
 ### Speed Comparison
--![**L = a^n b^n; n = 1000**(a^n b^n.png)]
+- ![**L = a^n b^n; n = 1000**(ScreenShots/a^n b^n.png)]
 
 
 
