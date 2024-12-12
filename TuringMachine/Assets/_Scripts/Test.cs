@@ -10,7 +10,7 @@ namespace Assets._Scripts
     public class Test : MonoBehaviour
     {
         #region Private Variables
-        private readonly HashSet<string> _inputAlphabet = new HashSet<string> { "a", "b", "c" };
+        private readonly HashSet<string> _inputAlphabet = new() { "a", "b", "c" };
         private GridManager _gridManager;
         [SerializeField] private float _delay = 0.5f;
         #endregion
@@ -18,7 +18,7 @@ namespace Assets._Scripts
         #region Private Methods
         private void Awake()
         {
-            _gridManager = FindObjectOfType<GridManager>();
+            _gridManager = GetComponent<GridManager>();
         }
 
         void Start()
@@ -158,11 +158,9 @@ namespace Assets._Scripts
 
             var tapeAlphabet = new HashSet<string> { "a", "b", "c", "x", "_" };
 
-            var tapeInput = w;
-
             var turingMachine = new StandardTuringMachine(
                 _gridManager,
-                tapeInput,
+                w,
                 _inputAlphabet,
                 tapeAlphabet,
                 transitionFunction,
@@ -302,11 +300,9 @@ namespace Assets._Scripts
 
             var tapeAlphabet = new HashSet<string> { "a", "b", "c", "_" };
 
-            var tapeInput = w;
-
             var turingMachine = new MultiHeadTuringMachine(
                 _gridManager,
-                tapeInput,
+                w,
                 _inputAlphabet,
                 tapeAlphabet,
                 transitionFunction,
@@ -436,11 +432,9 @@ namespace Assets._Scripts
 
             var inp = new string('1', n);
 
-            var tapeInp = inp;
-
             var turingMachine = new MultiHeadTuringMachine(
                 _gridManager,
-                tapeInp,
+                inp,
                 inputAlphabet,
                 tapeAlphabet,
                 transitionFunction,
