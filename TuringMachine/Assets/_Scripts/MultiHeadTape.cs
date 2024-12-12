@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace Assets._Scripts
 {
@@ -82,7 +81,7 @@ namespace Assets._Scripts
                 _tape.Insert(0, "_");
                 _size++;
                 newHead = 0;
-                for (var i = 0; i < _headPositions.Count; i++)
+                for (var i = 0; i < _headCount; i++)
                 {
                     if (i == newHead) continue;
                     _headPositions[i]++;
@@ -100,9 +99,9 @@ namespace Assets._Scripts
                 _size++;
                 return;
             }
-            foreach (var character in tapeInput)
+
+            foreach (var ch in tapeInput.Select(character => character.ToString()))
             {
-                var ch = character.ToString();
                 if (!inputAlphabet.Contains(ch))
                     throw new ArgumentException($"The symbol '{ch}' is not in the input alphabet."); ;
                 _tape.Add(ch);

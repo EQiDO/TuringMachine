@@ -10,13 +10,14 @@ namespace Assets._Scripts
         private readonly List<GameObject> _grid = new();
         private const float Spacing = 1;
         [SerializeField] private GameObject _cellObj;
-        [SerializeField] private GameObject _cellsHolder;
+        private GameObject _cellsHolder;
 
         #endregion
 
         #region Public Methods
         public void AddCells(List<string> tapeSymbols)
         {
+            _cellsHolder = new GameObject("Cells Holder");
             for (var i = 0; i < tapeSymbols.Count; i++)
             {
                 var cell = Instantiate(_cellObj, new Vector3(i * Spacing, 0, 0), Quaternion.identity);
@@ -108,14 +109,7 @@ namespace Assets._Scripts
 
                 if (headIndex < 0 || headIndex >= _grid.Count) continue;
 
-                if (positionCounts[headIndex] > 1)
-                {
-                    _grid[headIndex].GetComponent<MeshRenderer>().material.color = Color.yellow;
-                }
-                else
-                {
-                    _grid[headIndex].GetComponent<MeshRenderer>().material.color = headColors[i];
-                }
+                _grid[headIndex].GetComponent<MeshRenderer>().material.color = positionCounts[headIndex] > 1 ? Color.yellow : headColors[i];
             }
         }
         #endregion

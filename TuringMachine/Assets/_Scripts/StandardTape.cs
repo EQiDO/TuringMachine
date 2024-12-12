@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Assets._Scripts
 {
@@ -72,9 +73,9 @@ namespace Assets._Scripts
                 _size++;
                 return;
             }
-            foreach (var character in tapeInput)
+
+            foreach (var ch in tapeInput.Select(character => character.ToString()))
             {
-                var ch = character.ToString();
                 if (!inputAlphabet.Contains(ch))
                     throw new ArgumentException($"The symbol '{ch}' is not in the tape alphabet.");
                 _tape.Add(ch);

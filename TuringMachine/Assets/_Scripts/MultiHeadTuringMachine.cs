@@ -10,13 +10,13 @@ namespace Assets._Scripts
     {
         #region Private Variables
 
-        private HashSet<string> _tapeAlphabet;
+        private readonly HashSet<string> _tapeAlphabet;
         private readonly Dictionary<(string currentState, List<string> readSymbols), (string nextState, List<string> writeSymbols, List<Motion> motions)> _transitionFunction;
-        private string _acceptState;
+        private readonly string _acceptState;
         private readonly GridManager _gridManager;
 
         private string _currentState;
-        public MultiHeadTape tape;
+        private MultiHeadTape _tape;
         #endregion
 
         #region Ctor
@@ -45,9 +45,9 @@ namespace Assets._Scripts
         private void InitializeMachine(string initialState, string tapeInput, HashSet<string> inputAlphabet, int headCount, bool hasWait)
         {
             _currentState = initialState;
-            tape = new MultiHeadTape(tapeInput, inputAlphabet, headCount);
+            _tape = new MultiHeadTape(tapeInput, inputAlphabet, headCount);
             if (hasWait)
-                _gridManager.AddCells(tape.GetTapeSymbols());
+                _gridManager.AddCells(_tape.GetTapeSymbols());
         }
 
         private void ApplyTransition((string nextState, List<string> writeSymbols, List<Motion> motions) transitionValue)
@@ -55,7 +55,7 @@ namespace Assets._Scripts
             var (nextState, writeSymbols, motions) = transitionValue;
 
             _currentState = nextState;
-            tape.Write(writeSymbols, _tapeAlphabet, motions);
+            _tape.Write(writeSymbols, _tapeAlphabet, motions);
         }
 
         private bool IsEqual((string currentState, List<string> readSymbols) current, (string transitionState, List<string> transitionSymbols) transition)
@@ -72,7 +72,7 @@ namespace Assets._Scripts
 
             while (true)
             {
-                var transitionKey = (_currentState, tape.Read());
+                var transitionKey = (_currentState, _tape.Read());
                 var transitionValue = _transitionFunction.FirstOrDefault(x => IsEqual(transitionKey, x.Key)).Value;
 
                 if (transitionValue.Equals(default((string nextState, List<string> writeSymbols, List<Motion> motions))))
@@ -107,14 +107,14 @@ namespace Assets._Scripts
 
         private IEnumerator RunMachineWithDelay(float delay)
         {
-            var headPositions = tape.GetHeadPositions();
-            _gridManager.UpdateGrid(tape.GetTapeSymbols(), headPositions);
+            var headPositions = _tape.GetHeadPositions();
+            _gridManager.UpdateGrid(_tape.GetTapeSymbols(), headPositions);
 
             yield return new WaitForSeconds(delay/2);
 
             while (true)
             {
-                var transitionKey = (_currentState, tape.Read());
+                var transitionKey = (_currentState, _tape.Read());
                 var transitionValue = _transitionFunction.FirstOrDefault(x => IsEqual(transitionKey, x.Key)).Value;
 
                 if (transitionValue.Equals(default((string nextState, List<string> writeSymbols, List<Motion> motions))))
@@ -126,8 +126,8 @@ namespace Assets._Scripts
                 try
                 {
                     ApplyTransition(transitionValue);
-                    headPositions = tape.GetHeadPositions();
-                    _gridManager.UpdateGrid(tape.GetTapeSymbols(), headPositions);
+                    headPositions = _tape.GetHeadPositions();
+                    _gridManager.UpdateGrid(_tape.GetTapeSymbols(), headPositions);
                 }
                 catch (Exception e)
                 {
