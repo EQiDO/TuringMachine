@@ -43,30 +43,20 @@ This project implements two Turing Machine variations:
   - **Γ^k**: Inputs from all k heads.
   - **{L, R, S}^k**: Independent movements for k heads.
 
-## Visual Examples
-### Speed Comparison
-![a^n_b^n](https://github.com/user-attachments/assets/c3bec301-0fb0-4f3c-b77e-00fafa32f447)
-![w^r](https://github.com/user-attachments/assets/0a705434-c135-42fc-b378-dabe6d8c6246)
-
-https://github.com/user-attachments/assets/81146274-b307-4a7e-94ef-4a6288222854
-
-
 ## Comparison
-
 ### Standard Turing Machine
   - With only one head, the machine can read or write one symbol at a time, requiring more steps to traverse the tape and process multiple sections.
 
 ### Multi-Head Turing Machine
   - Each head operates independently, allowing the machine to read or write multiple symbols at different positions in a single step. This reduces the number of transitions needed for tasks that involve processing data spread across the tape.
 
-## Benefits of This Implementation
+## Visual Examples
+### Speed Comparison
+![a^n_b^n](https://github.com/user-attachments/assets/c3bec301-0fb0-4f3c-b77e-00fafa32f447)
+![w^r](https://github.com/user-attachments/assets/0a705434-c135-42fc-b378-dabe6d8c6246)
 
-### Code Advantages
-1. **OOP**: Modular, reusable classes improve readability and maintainability.
-2. **Scalability**: Supports extensions like custom alphabets or variable head counts.
+### All Examples Video
+https://github.com/user-attachments/assets/81146274-b307-4a7e-94ef-4a6288222854
 
-### Why OOP?
-- **Modularity**: Independent components for easier development.
-- **Reusability**: Shared functionality between machine types.
-- **Flexibility**: Easily extendable for new features.
-
+## User Instructions:
+You can create your own machine by going to the [Test.Cs](TuringMachine/Assets/_Scripts/Test.cs) and making a new function, similar to the example functions in the scripts.
