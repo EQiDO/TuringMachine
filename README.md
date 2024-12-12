@@ -45,11 +45,11 @@ This project implements two Turing Machine variations:
 
 ## Visual Examples
 ### Speed Comparison
-![Speed Test: L = a^n b^n; n = 1000.](ScreenShots/a^n_b^n.png)
+![a^n_b^n](https://github.com/user-attachments/assets/c3bec301-0fb0-4f3c-b77e-00fafa32f447)
+![w^r](https://github.com/user-attachments/assets/0a705434-c135-42fc-b378-dabe6d8c6246)
 
-![Speed Test: L = w^R; |w| = 500.](ScreenShots/w^r.png)
+https://github.com/user-attachments/assets/81146274-b307-4a7e-94ef-4a6288222854
 
-![All Examples](ScreenShots/Tm_video.mp4)
 
 ## Comparison
 
