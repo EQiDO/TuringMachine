@@ -59,4 +59,4 @@ This project implements two Turing Machine variations:
 https://github.com/user-attachments/assets/81146274-b307-4a7e-94ef-4a6288222854
 
 ## User Instructions:
-You can create your own machine by going to the [Test.Cs](TuringMachine/Assets/_Scripts/Test.cs) and making a new function, similar to the example functions in the scripts.
+You can create your own machine by going to the [Test.Cs](TuringMachine/Assets/_Scripts/Test.cs) and making a new function, similar to the example functions in the script.
